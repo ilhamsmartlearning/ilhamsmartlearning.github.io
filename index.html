@@ -7,138 +7,7 @@
 
 <!-- Vue 3 CDN -->
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-
-<style>
-body {
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  background: #f4f6f8;
-  color: #222;
-}
-
-header {
-  background: #2f3a40;
-  color: #fff;
-  padding: 12px 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-nav a {
-  color: #fff;
-  text-decoration: none;
-  margin-left: 16px;
-  font-size: 14px;
-}
-
-.hero {
-  background: #4caf50;
-  padding: 40px 24px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  align-items: center;
-}
-
-.badge {
-  display: inline-block;
-  background: #000;
-  color: #fff;
-  font-size: 12px;
-  padding: 4px 10px;
-  border-radius: 12px;
-  margin-bottom: 12px;
-}
-
-.container {
-  display: grid;
-  grid-template-columns: 260px 1fr;
-  gap: 24px;
-  padding: 24px;
-}
-
-aside, main {
-  background: #fff;
-  border-radius: 12px;
-  padding: 16px;
-}
-
-aside ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-aside li {
-  padding: 8px 0;
-  border-left: 3px solid #4caf50;
-  padding-left: 8px;
-  cursor: pointer;
-}
-
-aside li.active {
-  font-weight: bold;
-  color: #4caf50;
-}
-
-aside li.locked {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* ===== EXAMPLE ===== */
-.example {
-  position: relative;
-  background: #9ad0f5;
-  padding: 16px;
-  border-radius: 12px;
-  margin-top: 16px;
-  transition: opacity 0.3s ease;
-}
-
-.example.checked {
-  opacity: 0.55;
-}
-
-/* ===== CHECKMARK ===== */
-.checkmark {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  border: 2px solid #1e88e5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: transparent;
-  font-weight: bold;
-  background: white;
-  transition: all 0.3s ease;
-}
-
-.checkmark.active {
-  background: #1e88e5;
-  color: white;
-}
-
-footer {
-  background: #2f3a40;
-  color: #fff;
-  text-align: center;
-  padding: 16px;
-  font-size: 13px;
-}
-
-@media (max-width: 768px) {
-  .hero, .container {
-    grid-template-columns: 1fr;
-  }
-}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -156,7 +25,7 @@ footer {
     <span class="badge">{{ level }}</span>
     <h2>{{ title }}</h2>
   </div>
-  <img :src="heroImage" style="width:100%; border-radius:12px;" />
+  <img :src="heroImage" style="width:600px; border-radius:12px;" />
 </section>
 
 <div class="container">
@@ -175,49 +44,31 @@ footer {
 
   <main>
     <h3>{{ activeLesson }}</h3>
-    <p>Learn how to code your first website using Vue.js.</p>
 
     <!-- MATERI -->
-    <div
-      class="example"
-      v-if="activeLesson === 'Introduction'"
-      :class="{ checked: readStatus[0] }"
-    >
-      <div
-        class="checkmark"
-        :class="{ active: readStatus[0] }"
-        @click="toggleRead(0)"
-      >✓</div>
+     <section v-if="activeLesson === 'Introduction'">
+        <p>Welcome to the Introduction lesson. Here we will learn about the basics of web development.</p>
 
-      <h4>Bird Conservation</h4>
-      <img :src="birdImage" style="max-width:200px; border-radius:12px;" />
-      <p><strong>Threats to birds:</strong></p>
-      <ol>
-        <li v-for="t in threats" :key="t">{{ t }}</li>
-      </ol>
-      <a :href="wikiLink" target="_blank">Read more</a>
-    </div>
+        <div
+        class="example"
+        :class="{ checked: readStatus[0] }"
+        >
+        <div
+            class="checkmark"
+            :class="{ active: readStatus[0] }"
+            @click="toggleRead(0)"
+        >✓</div>
 
-    <div
-      class="example"
-      v-if="activeLesson === 'Introduction'"
-      :class="{ checked: readStatus[1] }"
-    >
-      <div
-        class="checkmark"
-        :class="{ active: readStatus[1] }"
-        @click="toggleRead(1)"
-      >✓</div>
+        <h4>Bird Conservation</h4>
+        <img :src="birdImage" style="max-width:200px; border-radius:12px;" />
+        <p><strong>Threats to birds:</strong></p>
+        <ol>
+            <li v-for="t in threats" :key="t">{{ t }}</li>
+        </ol>
+        <a :href="wikiLink" target="_blank">Read more</a>
+        </div>
 
-      <h4>Bird Conservation</h4>
-      <img :src="birdImage" style="max-width:200px; border-radius:12px;" />
-      <p><strong>Threats to birds:</strong></p>
-      <ol>
-        <li v-for="t in threats" :key="t">{{ t }}</li>
-      </ol>
-      <a :href="wikiLink" target="_blank">Read more</a>
-    </div>
-
+     </section>
   </main>
 </div>
 
@@ -232,13 +83,13 @@ createApp({
   data() {
     return {
       siteName: 'Ilham Smart Learning',
-      title: 'Bird Watch Website 1.0',
-      level: 'Web Development · Level 1',
-      heroImage: 'https://placehold.co/800x400?text=Hero+Image',
+      title: 'Dasar Pembuatan Website',
+      level: 'Level 1',
+      heroImage: 'img/web.png',
       birdImage: 'https://images.unsplash.com/photo-1504208434309-cb69f4fe52b0?q=80&w=400',
       wikiLink: 'https://en.wikipedia.org/wiki/Bird_conservation',
       footerText: 'Published for learning purposes · Vue.js version',
-      menus: ['Home', 'Find a project', 'Log in'],
+      menus: [''],
       lessons: [
         'Introduction',
         'Getting set up',
