@@ -1,122 +1,181 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Ilham Smart Learning</title>
+<meta charset="UTF-8">
+<title>Masuk Kode Kelas</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Vue 3 CDN -->
-<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-<link rel="stylesheet" href="style.css">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  background: #4caf50;
+  overflow: hidden;
+  color: #fff;
+}
+
+/* ===== HEADER ===== */
+header {
+  height: 56px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(0,0,0,0.2);
+}
+
+header .right {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+a {
+  color: #fff;
+  text-decoration: none;
+}
+
+/* ===== CENTER ===== */
+.center {
+  height: calc(100vh - 56px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 16px;
+}
+
+/* ===== LOGO ===== */
+.logo {
+  font-size: 42px;
+  font-weight: 900;
+  letter-spacing: 2px;
+}
+
+.sub {
+  opacity: 0.9;
+  margin-bottom: 28px;
+}
+
+/* ===== CARD ===== */
+.card {
+  background: #c62828;
+  border-radius: 20px;
+  padding: 18px;
+  box-shadow: 0 10px 0 #8e1e1e;
+  width: 100%;
+  max-width: 520px;
+}
+
+.inner {
+  background: #fff;
+  border-radius: 14px;
+  padding: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.inner input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 14px;
+  font-size: 16px;
+  border-radius: 10px;
+}
+
+.inner button {
+  background: #0b3556;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 0 22px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.inner button:hover {
+  background: #092b45;
+}
+
+/* ===== SALJU ===== */
+.snow {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(white 2px, transparent 2px),
+    radial-gradient(white 1.5px, transparent 1.5px),
+    radial-gradient(white 1px, transparent 1px);
+  background-size: 120px 120px, 200px 200px, 300px 300px;
+  animation: snow 15s linear infinite;
+  opacity: 0.6;
+}
+
+@keyframes snow {
+  from {
+    background-position: 0 0, 0 0, 0 0;
+  }
+  to {
+    background-position: 0 600px, 0 800px, 0 1000px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo {
+    font-size: 32px;
+  }
+}
+</style>
 </head>
 
 <body>
-<div id="app">
+
+<div class="snow"></div>
 
 <header>
-  <h1>{{ siteName }}</h1>
-  <nav>
-    <a href="#" v-for="menu in menus" :key="menu">{{ menu }}</a>
-  </nav>
+  <strong>Ilham Smart Learning</strong>
+  <div class="right">
+    <a href="generate.html">Generate</a>
+  </div>
 </header>
 
-<section class="hero">
-  <div>
-    <span class="badge">{{ level }}</span>
-    <h2>{{ title }}</h2>
-  </div>
-  <img :src="heroImage" style="width:600px; border-radius:12px;" />
-</section>
+<div class="center">
+  <div class="logo">Ilham Smart Learning</div>
+  <div class="sub">Belajar untuk semua</div>
 
-<div class="container">
-  <aside>
-    <ul>
-      <li
-        v-for="item in lessons"
-        :key="item"
-        :class="{ active: activeLesson === item, locked: isLocked(item) }"
-        @click="selectLesson(item)"
+  <div class="card">
+    <div class="inner">
+      <input
+        type="text"
+        id="kodeKelas"
+        placeholder="Masukkan kode kelas"
+        onkeydown="if(event.key === 'Enter') gabungKelas()"
       >
-        {{ item }} <span v-if="isLocked(item)">🔒</span>
-      </li>
-    </ul>
-  </aside>
-
-  <main>
-    <h3>{{ activeLesson }}</h3>
-
-    <!-- MATERI -->
-     <section v-if="activeLesson === 'Introduction'">
-        <p>Welcome to the Introduction lesson. Here we will learn about the basics of web development.</p>
-
-        <div
-        class="example"
-        :class="{ checked: readStatus[0] }"
-        >
-        <div
-            class="checkmark"
-            :class="{ active: readStatus[0] }"
-            @click="toggleRead(0)"
-        >✓</div>
-
-        <h4>Bird Conservation</h4>
-        <img :src="birdImage" style="max-width:200px; border-radius:12px;" />
-        <p><strong>Threats to birds:</strong></p>
-        <ol>
-            <li v-for="t in threats" :key="t">{{ t }}</li>
-        </ol>
-        <a :href="wikiLink" target="_blank">Read more</a>
-        </div>
-
-     </section>
-  </main>
-</div>
-
-<footer>{{ footerText }}</footer>
-
+      <button onclick="gabungKelas()">Gabung</button>
+    </div>
+  </div>
 </div>
 
 <script>
-const { createApp } = Vue;
+function gabungKelas() {
+  const kode = document.getElementById("kodeKelas").value.trim();
 
-createApp({
-  data() {
-    return {
-      siteName: 'Ilham Smart Learning',
-      title: 'Dasar Pembuatan Website',
-      level: 'Level 1',
-      heroImage: 'img/web.png',
-      birdImage: 'https://images.unsplash.com/photo-1504208434309-cb69f4fe52b0?q=80&w=400',
-      wikiLink: 'https://en.wikipedia.org/wiki/Bird_conservation',
-      footerText: 'Published for learning purposes · Vue.js version',
-      menus: [''],
-      lessons: [
-        'Introduction',
-        'Getting set up',
-        'Your first webpage',
-        'Controlling how it looks',
-        'Adding pictures',
-        'Making a list'
-      ],
-      activeLesson: 'Introduction',
-      threats: ['Habitat destruction', 'Pollution', 'Climate change'],
-      readStatus: [false, false]
-    };
-  },
-  methods: {
-    toggleRead(i) {
-      this.readStatus[i] = !this.readStatus[i];
-    },
-    isLocked(lesson) {
-      return lesson === 'Making a list' &&
-        !this.readStatus.every(v => v === true);
-    },
-    selectLesson(lesson) {
-      if (this.isLocked(lesson)) return;
-      this.activeLesson = lesson;
-    }
+  if (kode === "") {
+    alert("Kode kelas tidak boleh kosong!");
+    return;
   }
-}).mount('#app');
+
+  // Redirect ke folder kelas/kode
+  window.location.href = "kelas/" + encodeURIComponent(kode) + ".html";
+}
 </script>
 
 </body>
