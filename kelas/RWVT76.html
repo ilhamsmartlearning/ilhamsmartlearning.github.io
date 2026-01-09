@@ -14,7 +14,7 @@
 <div id="app">
 
 <header>
-  <h1>{{ siteName }}</h1>
+  <h1 onclick="location.href = '..';">{{ siteName }}</h1>
   <nav>
     <a href="#" v-for="menu in menus" :key="menu">{{ menu }}</a>
   </nav>
@@ -57,14 +57,14 @@
             @click="toggleRead(0)"
         >✓</div>
 
-        <h4>Dalam membuat halaman web, HTML tidak sendirian. Ada bahasa lain lagi yang menjadi pelengkapnya, yakni CSS dan Javascript.</h4>
+        <h3>Dalam membuat halaman web, HTML tidak sendirian. Ada bahasa lain lagi yang menjadi pelengkapnya, yakni CSS dan Javascript.</h3>
         <img src="https://www.petanikode.com/img/html/dasar/html-css-js.png" style="border-radius:12px;" />
         </div>
      </section>
 
     <!-- MATERI -->
      <section v-if="activeLesson === 'Membuat HTML'">
-        <p>Mari kita mulai dengan membuka  <a href="https://sandbox--code.vercel.app/" target="_blank">teks editor</a>, lalu tulislah kode berikut.</p>
+        <p>Mari kita mulai dengan membuka  <a href="https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_doctype" target="_blank">teks editor</a>, lalu tulislah kode berikut.</p>
 
         <div class="example" :class="{ checked: readStatus[0] }">
         <div
@@ -74,8 +74,33 @@
         >✓</div>
 
         <h4>Kode HTML Pertama.</h4>
-        <img src="https://www.petanikode.com/img/html/dasar/html-css-js.png" style="border-radius:12px;" />
+        <img src="../img/html.png" style="border-radius:12px;" />
         </div>
+
+     </section>
+
+    <!-- MATERI -->
+     <section v-if="activeLesson === 'Struktur Dasar'">
+        <p>Kalau kita perhatikan.. struktur dasar kode HTML terdiri dari tiga bagian penting:</p>
+
+        <div class="example" :class="{ checked: readStatus[0] }">
+          <div class="checkmark" :class="{ active: readStatus[0] }" @click="toggleRead(0)">✓</div>
+          <h4>1. Bagian Deklarasi</h4>
+          <p>Ini adalah tag deklarasi untuk menyatakan tipe dokumen dan versinya. Pada contoh di atas, kita menyatakan dokumen ini bertipe HTML</p>
+        </div>
+        
+        <div class="example" :class="{ checked: readStatus[0] }">
+          <div class="checkmark" :class="{ active: readStatus[0] }" @click="toggleRead(0)">✓</div>
+          <h4>2. Bagian HEAD</h4>
+          <p>Pada bagian HEAD, biasanya digunakan untuk menuliskan tag-tag yang akan dibaca oleh mesin.</p>
+        </div>
+
+        <div class="example" :class="{ checked: readStatus[0] }">
+          <div class="checkmark" :class="{ active: readStatus[0] }" @click="toggleRead(0)">✓</div>
+          <h4>3. Bagian BODY</h4>
+          <p>Bagian BODY adalah bagian yang akan ditampilkan pada web browser. Penulisannya di mulai dari tag body dan ditutup dengan /body</p>
+        </div>
+
      </section>
 
 
@@ -103,7 +128,7 @@ createApp({
       lessons: [
         'Apa itu HTML?',
         'Membuat HTML',
-        'Your first webpage',
+        'Struktur Dasar',
         'Controlling how it looks',
         'Adding pictures',
         'Making a list'

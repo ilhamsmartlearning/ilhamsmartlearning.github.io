@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ilham Smart Learning</title>
+
+<!-- Vue 3 CDN -->
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+<div id="app">
+
+<header>
+  <h1 onclick="location.href = '..';">{{ siteName }}</h1>
+  <nav>
+    <a href="#" v-for="menu in menus" :key="menu">{{ menu }}</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div>
+    <span class="badge">{{ level }}</span>
+    <h1>{{ title }}</h1>
+  </div>
+  <img :src="heroImage" style="width:600px; border-radius:12px;" />
+</section>
+
+<div class="container">
+  <aside>
+    <ul>
+      <li
+        v-for="item in lessons"
+        :key="item"
+        :class="{ active: activeLesson === item, locked: isLocked(item) }"
+        @click="selectLesson(item)"
+      >
+        {{ item }} <span v-if="isLocked(item)">🔒</span>
+      </li>
+    </ul>
+  </aside>
+
+  <main>
+    <h3>{{ activeLesson }}</h3>
+
+    <!-- MATERI -->
+     <section v-if="activeLesson === 'Modul'">
+        <p>HTML atau HyperText Markup Language merupakan sebuah bahasa untuk membuat halaman web.</p>
+        <p>Penanda atau markup ini, nanti akan kita sebut dengan Tag.</p>
+
+        <!--Modul Biru-->
+        <div class="example" :class="{ checked: readStatus[0] }">
+          <div class="checkmark" :class="{ active: readStatus[0] }" @click="toggleRead(0)" >✓</div>
+
+          <h3>1. Gunakan Stater Template Pada Halaman <a target="_blank" href="https://trinket.io/html/6a946186f8cf">Ini</a></h3>
+          <a href="https://ibb.co/RGH7THSQ"><img src="https://i.ibb.co/1Y2bG2nR/image.png" alt="image" border="0"></a>
+        </div>
+
+        <p>Pada halaman Trinket kamu akan belajar bagaimana cara kode HTML menyusun sebuah halaman website seperti Google atau Youtube sehingga dapat kita nikmati seperti saat ini.</p>
+        
+        <!--Modul Biru-->
+        <div class="example" :class="{ checked: readStatus[1] }">
+          <div class="checkmark" :class="{ active: readStatus[1] }" @click="toggleRead(1)" >✓</div>
+
+          <h3>2. Penjelasan Kode Yang Digunakan</h3>
+          <p><ul>
+            <li>&lt;HTML&gt;</li> - Merupakan tag utama yang membungkus seluruh isi website.
+            <li>&lt;head&gt;</li> - Berisi penanda informasi utama sebuah website.
+            <li>&lt;body&gt;</li> - Merupakan isi konten utama dari sebuah website.
+          </ul></p>
+        </div>
+        
+        <p>Kode-kode tadi adalah stuktur utama dari website yang sering digunakan. Berikutnya kita akan belajar tag yang digunakan untuk memperindah halaman website.</p>
+
+        <!--Modul Biru-->
+        <div class="example" :class="{ checked: readStatus[2] }">
+          <div class="checkmark" :class="{ active: readStatus[2] }" @click="toggleRead(2)" >✓</div>
+
+          <h3>3. Tag &lt;title&gt;</h3>
+          <p>Tag ini digunakan untuk memberikan judul pada bagian atas website</p>
+          <a href="https://ibb.co/B5Jz9jgy"><img src="https://i.ibb.co/0RLDxZfC/image.png" alt="image" border="0"></a>
+          <a href="https://ibb.co/35CB6r6m"><img src="https://i.ibb.co/Y4LpnRnB/image.png" alt="image" border="0"></a>
+        </div>
+
+        <!--Modul Biru-->
+        <div class="example" :class="{ checked: readStatus[3] }">
+          <div class="checkmark" :class="{ active: readStatus[3] }" @click="toggleRead(3)" >✓</div>
+
+          <h3>4. Tag Heading</h3>
+          <p>Heading adalah sebuah judul yang biasanya diberikan pada halaman atau beberapa bagian dari artikel.</p>
+          <a href="https://ibb.co/35CB6r6m"><img src="https://www.petanikode.com/img/html/heading/contoh-heding-html.png" alt="image" border="0"></a>
+          <p>Judul pada HTML dapat kita buat dengan tag &lt;h1&gt; sampai &lt;h6&gt;. Tag &lt;h1&gt; digunakan pada judul level pertama. Lalu tag lainnya digunakan pada sub heading atau level berikutnya.</p>
+          <a href="https://ibb.co.com/B563Cs70"><img src="https://i.ibb.co.com/S4my3v1F/image.png" alt="image" border="0"></a>
+        </div>
+
+        <p>Setelah kamu memahami tentang heading. Selanjutkan kita akan memahami tentang pembuatan paragraf. Paragraf dibuat dan dipisashkan dengan menggunakan tag p</p>
+
+        <!--Modul Biru-->
+        <div class="example" :class="{ checked: readStatus[4] }">
+          <div class="checkmark" :class="{ active: readStatus[4] }" @click="toggleRead(4)" >✓</div>
+
+          <h3>5. Tag Paragraf</h3>
+          <p>Paragraf adalah kumpulan dari beberapa kalimat. Pada web, Paragraf biasanya digunakan untuk menampilkan teks atau artikel.</p>
+          <p>Paragraf pada HTML dibuat dengan tag <code>&lt;p&gt;</code>. Selain tag ini, ada juga tag pendukung lain seperti <code>&lt;div&gt;</code>, <code>&lt;hr&gt;</code>, <code>&lt;br&gt;</code>.</p>
+          <a href="https://ibb.co/35CB6r6m"><img src="https://www.petanikode.com/img/html/paragraf/tag-br.png" alt="image" border="0"></a>
+          <p>Tuliskan kode seperti ini.</p>
+          <a href="https://ibb.co.com/nsykSFKb"><img src="https://i.ibb.co.com/pvTXpSkx/image.png" alt="image" border="0"></a>
+        </div>
+
+      </section>
+
+
+
+  </main>
+</div>
+
+<footer>{{ footerText }}</footer>
+
+</div>
+
+<script>
+const { createApp } = Vue;
+
+createApp({
+  data() {
+    return {
+      siteName: 'Ilham Smart Learning',
+      title: 'Dasar Pembuatan Website',
+      level: 'SMP',
+      heroImage: '../img/web.png',
+      birdImage: 'https://images.unsplash.com/photo-1504208434309-cb69f4fe52b0?q=80&w=400',
+      wikiLink: 'https://en.wikipedia.org/wiki/Bird_conservation',
+      footerText: 'Published for learning purposes · Vue.js version',
+      menus: [''],
+      lessons: [
+        'Modul',
+        'Quiz'
+      ],
+      activeLesson: 'Modul',
+      readStatus: [false, false,false, false,false]
+    };
+  },
+  methods: {
+    toggleRead(i) {
+      this.readStatus[i] = !this.readStatus[i];
+    },
+    isLocked(lesson) {
+      return lesson === 'Quiz' &&
+        !this.readStatus.every(v => v === true);
+    },
+    selectLesson(lesson) {
+      if (this.isLocked(lesson)) return;
+      this.activeLesson = lesson;
+    }
+  }
+}).mount('#app');
+</script>
+
+</body>
+</html>
