@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ilham Smart Learning</title>
+
+<!-- Vue 3 -->
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+<!-- Tailwind (untuk Quiz) -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link rel="stylesheet" href="../style.css">
+
+<style>
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.8);
+  z-index: 50;
+  justify-content: center;
+  align-items: center;
+}
+.modal-active { display: flex; }
+</style>
+</head>
+
+<body>
+<div id="app">
+
+<header>
+  <h1>{{ siteName }}</h1>
+</header>
+
+<section class="hero">
+  <div>
+    <span class="badge">{{ level }}</span>
+    <h1>{{ title }}</h1>
+  </div>
+  <img :src="heroImage" style="width:600px;border-radius:12px;">
+</section>
+
+<div class="container">
+<aside>
+  <ul>
+    <li v-for="item in lessons"
+        :class="{ active: activeLesson===item, locked:isLocked(item) }"
+        @click="selectLesson(item)">
+      {{ item }} <span v-if="isLocked(item)">🔒</span>
+    </li>
+  </ul>
+</aside>
+
+<main>
+<h3>{{ activeLesson }}</h3>
+
+<!-- ================= MODUL ================= -->
+<section v-if="activeLesson==='Modul'">
+
+<h2>Ringkasan Materi Web Development Level 1</h2>
+
+<div class="example" v-for="(materi,i) in materiList" :key="i"
+     :class="{checked:readStatus[i]}">
+  <div class="checkmark"
+       :class="{active:readStatus[i]}"
+       @click="toggleRead(i)">✓</div>
+  <h3>{{ materi.judul }}</h3>
+  <p>{{ materi.isi }}</p>
+</div>
+
+</section>
+
+<!-- ================= QUIZ ================= -->
+<section v-if="activeLesson==='Quiz'" class="p-4">
+
+<div class="bg-white p-8 rounded-2xl shadow-xl max-w-2xl mx-auto">
+
+<div class="flex justify-between mb-4">
+  <h2 class="text-xl font-bold text-blue-600">Kuis Web Dev #1</h2>
+  <span class="text-sm bg-blue-100 px-3 py-1 rounded">
+    Soal {{ currentQuestion+1 }}/{{ quizData.length }}
+  </span>
+</div>
+
+<div v-if="!quizFinished">
+  <p class="mb-4 font-medium">{{ quizData[currentQuestion].q }}</p>
+
+  <button v-for="(opt,i) in quizData[currentQuestion].options"
+          :key="i"
+          @click="checkAnswer(i)"
+          class="w-full text-left p-3 mb-2 border rounded hover:bg-blue-50">
+    {{ opt }}
+  </button>
+</div>
+
+<div v-else class="text-center">
+  <h2 class="text-2xl font-bold">Kuis Selesai 🎉</h2>
+  <p class="text-xl mt-2">Skor: {{ score }}/10</p>
+</div>
+
+</div>
+
+<!-- MODAL -->
+<div :class="['modal-overlay', modal==='success'?'modal-active':'']">
+  <img src="https://media.giphy.com/media/9uffe4HEa29LApTR14/giphy.gif" width="250">
+</div>
+
+<div :class="['modal-overlay', modal==='fail'?'modal-active':'']">
+  <img src="https://media.giphy.com/media/d2ZcfODrNWlA5Gg0/giphy.gif" width="250">
+</div>
+
+</section>
+</main>
+</div>
+
+<footer>{{ footerText }}</footer>
+</div>
+
+<script>
+const { createApp } = Vue;
+
+createApp({
+data(){
+return{
+siteName:'Ilham Smart Learning',
+title:'Dasar Pembuatan Website',
+level:'SMP',
+heroImage:'../img/web.png',
+footerText:'Published for learning',
+lessons:['Modul','Quiz'],
+activeLesson:'Modul',
+readStatus:[false,false,false,false,false,false,false,false,false,false],
+
+materiList:[
+{judul:'1. HTML sebagai Dasar Website', isi:'HTML adalah bahasa untuk membuat struktur halaman web.'},
+{judul:'2. Tag dan Elemen HTML', isi:'HTML menggunakan tag pembuka dan penutup.'},
+{judul:'3. Heading dan Paragraf', isi:'Heading untuk judul, paragraf untuk isi.'},
+{judul:'4. CSS', isi:'CSS mengatur warna, font, dan tampilan.'},
+{judul:'5. Gambar', isi:'Menggunakan tag img dengan src dan alt.'},
+{judul:'6. Embedding', isi:'Menambahkan video dan peta dengan embed.'},
+{judul:'7. List', isi:'Menggunakan ul, ol, dan li.'},
+{judul:'8. Struktur Website', isi:'Konten berada di dalam body.'},
+{judul:'9. HTML & CSS', isi:'HTML struktur, CSS tampilan.'},
+{judul:'10. Kesimpulan', isi:'HTML dan CSS cukup untuk website sederhana.'},
+],
+
+quizData: [
+{q:"Fungsi file .html?", options:["Gambar","Desain","Halaman web","Database"], correct:2},
+{q:"Tag paragraf?", options:["h1","p","img","body"], correct:1},
+{q:"Fungsi h1?", options:["Link","Judul besar","Gambar","Video"], correct:1},
+{q:"Tag pembuka dan penutup?", options:["Hiasan","Penanda elemen","Cache","Server"], correct:1},
+{q:"Menyisipkan video?", options:["Hosting","Embedding","Download","Upload"], correct:1},
+{q:"Cara embed YouTube?", options:["Copy link","Share→Embed","Download","Manual"], correct:1},
+{q:"Bahasa tampilan?", options:["HTML","CSS","JS","Python"], correct:1},
+{q:"List tanpa nomor?", options:["ol","ul","li","list"], correct:1},
+{q:"Tag gambar?", options:["image","img","src","pic"], correct:1},
+{q:"Fungsi alt?", options:["Ukuran","Warna","Teks pengganti","Filter"], correct:2},
+],
+
+currentQuestion:0,
+score:0,
+quizFinished:false,
+modal:null
+};
+},
+methods:{
+toggleRead(i){ this.readStatus[i]=!this.readStatus[i]; },
+isLocked(l){ return l==='Quiz' && !this.readStatus.every(v=>v); },
+selectLesson(l){ if(!this.isLocked(l)) this.activeLesson=l; },
+checkAnswer(i){
+this.modal = i===this.quizData[this.currentQuestion].correct ? 'success':'fail';
+if(this.modal==='success') this.score++;
+setTimeout(()=>{
+this.modal=null;
+this.currentQuestion++;
+if(this.currentQuestion>=this.quizData.length) this.quizFinished=true;
+},2000);
+}
+}
+}).mount('#app');
+</script>
+</body>
+</html>
