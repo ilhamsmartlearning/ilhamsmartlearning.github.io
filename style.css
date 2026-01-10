@@ -129,3 +129,12 @@ footer {
     grid-template-columns: 1fr;
   }
 }
+
+/* Membuat semua gambar di dalam .example menjadi fluid */
+.example img {
+  max-width: 100%;
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px; /* opsional, samakan gaya */
+}
