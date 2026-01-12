@@ -130,7 +130,7 @@ footer {
   }
 }
 
-/* Membuat semua gambar di dalam .example menjadi fluid */
+/* Membuat semua gambar di dalam .example menjadi fluid tes */
 .example img {
   max-width: 100%;
   width: 100%;
