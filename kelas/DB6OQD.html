@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ilham Smart Learning</title>
+    <!-- Vue 3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <!-- Tailwind (untuk Quiz) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, .8);
+        z-index: 50;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .modal-active {
+        display: flex;
+      }
+	  
+	  h2{
+		font-size:40px !important;
+	  }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <header>
+        <h1>{{ siteName }}</h1>
+      </header>
+      <section class="hero">
+        <div>
+          <span class="badge">{{ level }}</span>
+          <h2>{{ title }}</h2>
+        </div>
+        <img :src="heroImage" style="width:600px;border-radius:12px;">
+      </section>
+      <div class="container">
+        <aside>
+          <ul>
+            <li v-for="item in lessons" :class="{ active: activeLesson===item, locked:isLocked(item) }" @click="selectLesson(item)">
+              {{ item }}
+              <span v-if="isLocked(item)">🔒</span>
+            </li>
+          </ul>
+        </aside>
+        <main>
+          <h3>{{ activeLesson }}</h3>
+          <!-- ================= MODUL ================= -->
+          <section v-if="activeLesson==='Modul'">
+            <div class="example" v-for="(materi,i) in materiList" :key="i" :class="{checked:readStatus[i]}">
+              <div class="checkmark" :class="{active:readStatus[i]}" @click="toggleRead(i)">✓</div>
+              <h3>{{ materi.judul }}</h3>
+              <p>{{ materi.isi }}</p>
+            </div>
+          </section>
+          <!-- ================= QUIZ ================= -->
+          <section v-if="activeLesson==='Quiz'" class="p-4">
+            <div class="bg-white p-8 rounded-2xl shadow-xl max-w-2xl mx-auto">
+              <div class="flex justify-between mb-4">
+                <h2 class="text-xl font-bold text-blue-600">Kuis</h2>
+                <span class="text-sm bg-blue-100 px-3 py-1 rounded"> Soal {{ currentQuestion+1 }}/{{ quizData.length }}
+                </span>
+              </div>
+              <div v-if="!quizFinished">
+                <p class="mb-4 font-medium">{{ quizData[currentQuestion].q }}</p>
+                <button v-for="(opt,i) in quizData[currentQuestion].options" :key="i" @click="checkAnswer(i)" class="w-full text-left p-3 mb-2 border rounded hover:bg-blue-50">
+                  {{ opt }}
+                </button>
+              </div>
+              <div v-else class="text-center">
+                <h2 class="text-2xl font-bold">Kuis Selesai 🎉</h2>
+                <p class="text-xl mt-2">Skor: {{ score }}/10</p>
+              </div>
+            </div>
+            <!-- MODAL -->
+            <div :class="['modal-overlay', modal==='success'?'modal-active':'']">
+              <img src="https://media.giphy.com/media/9uffe4HEa29LApTR14/giphy.gif" width="250">
+            </div>
+            <div :class="['modal-overlay', modal==='fail'?'modal-active':'']">
+              <img src="https://media.giphy.com/media/d2ZcfODrNWlA5Gg0/giphy.gif" width="250">
+            </div>
+          </section>
+        </main>
+      </div>
+      <footer>{{ footerText }}</footer>
+    </div>
+    <script>
+      const {
+        createApp
+      } = Vue;
+      createApp({
+        data() {
+          return {
+            siteName: 'Ilham Smart Learning',
+            title: 'Dasar Pembuatan Website',
+            level: 'SMP',
+            heroImage: '../img/web.png',
+            footerText: 'Published for learning',
+            lessons: ['Modul', 'Quiz'],
+            activeLesson: 'Modul',
+            readStatus: [false, false, false, false, false, false, false, false, false, false],
+            materiList: [
+  {
+    judul: '1. Apa itu Website',
+    isi: 'Website dapat diibaratkan sebagai rumah di dunia internet. Agar rumah tersebut dapat dibangun, kita perlu membuat kode terlebih dahulu.'
+  },
+  {
+    judul: '2. Struktur Website',
+    isi: 'HTML (Hypertext Markup Language) adalah bahasa untuk membangun struktur halaman web. HTML diibaratkan sebagai kerangka tubuh manusia.'
+  },
+  {
+    judul: '3. Penggunaan Tag HTML',
+    isi: 'HTML menggunakan tag untuk memberi perintah kepada browser tentang isi halaman. Tag digunakan untuk menandai elemen pada website.'
+  },
+  {
+    judul: '4. Penulisan Tag HTML',
+    isi: 'Tag HTML ditulis menggunakan tanda kurung siku < > dan biasanya memiliki tag pembuka dan penutup.'
+  },
+  {
+    judul: '5. Tag Heading',
+    isi: 'Tag heading digunakan untuk judul dan subjudul agar isi website mudah dibaca dan dipahami.'
+  },
+  {
+    judul: '6. Tag Paragraf',
+    isi: 'Tag paragraf (<p>) digunakan untuk menampilkan teks dalam bentuk paragraf pada halaman website.'
+  },
+  {
+    judul: '7. Praktik HTML',
+    isi: 'Latihan dapat dilakukan menggunakan website trinket.io untuk menulis dan menjalankan kode HTML secara online.'
+  },
+  {
+    judul: '8. Membuat Gambar dengan AI',
+    isi: 'Gambar dapat dibuat menggunakan AI Copilot dengan prompt tertentu, misalnya gambar liburan di pantai ukuran 600x300.'
+  },
+  {
+    judul: '9. Upload Gambar Online',
+    isi: 'Gambar yang telah dibuat dapat diupload ke penyimpanan online seperti Imgur agar bisa dipanggil melalui link.'
+  },
+  {
+    judul: '10. Menampilkan Gambar di Website',
+    isi: 'Tag <img> digunakan untuk menampilkan gambar pada website dengan menggunakan atribut src.'
+  }
+],
+quizData: [
+  {
+    q: "Website diibaratkan seperti apa?",
+    options: ["Sekolah", "Rumah di internet", "Game", "Aplikasi"],
+    correct: 1
+  },
+  {
+    q: "Bahasa untuk membangun struktur website adalah?",
+    options: ["CSS", "JavaScript", "HTML", "Python"],
+    correct: 2
+  },
+  {
+    q: "HTML diibaratkan sebagai?",
+    options: ["Otak manusia", "Kerangka tubuh", "Kulit", "Pakaian"],
+    correct: 1
+  },
+  {
+    q: "Tag HTML digunakan untuk?",
+    options: ["Menghias website", "Memberi perintah ke browser", "Menghapus data", "Menyimpan gambar"],
+    correct: 1
+  },
+  {
+    q: "Tag HTML ditulis menggunakan tanda?",
+    options: ["()", "{}", "[]", "< >"],
+    correct: 3
+  },
+  {
+    q: "Tag heading digunakan untuk?",
+    options: ["Gambar", "Judul dan subjudul", "Link", "Video"],
+    correct: 1
+  },
+  {
+    q: "Tag <p> digunakan untuk?",
+    options: ["Judul", "Gambar", "Paragraf", "Tabel"],
+    correct: 2
+  },
+  {
+    q: "Website untuk latihan HTML online adalah?",
+    options: ["Google", "YouTube", "Trinket.io", "Imgur"],
+    correct: 2
+  },
+  {
+    q: "Website untuk upload gambar online adalah?",
+    options: ["GitHub", "Imgur", "Trinket", "Wikipedia"],
+    correct: 1
+  },
+  {
+    q: "Tag untuk menampilkan gambar di HTML adalah?",
+    options: ["<image>", "<pic>", "<img>", "<src>"],
+    correct: 2
+  }
+],
+            currentQuestion: 0,
+            score: 0,
+            quizFinished: false,
+            modal: null
+          };
+        },
+        methods: {
+          toggleRead(i) {
+            this.readStatus[i] = !this.readStatus[i];
+          },
+          isLocked(l) {
+            return l === 'Quiz' && !this.readStatus.every(v => v);
+          },
+          selectLesson(l) {
+            if (!this.isLocked(l)) this.activeLesson = l;
+          },
+          checkAnswer(i) {
+            this.modal = i === this.quizData[this.currentQuestion].correct ? 'success' : 'fail';
+            if (this.modal === 'success') this.score++;
+            setTimeout(() => {
+              this.modal = null;
+              this.currentQuestion++;
+              if (this.currentQuestion >= this.quizData.length) this.quizFinished = true;
+            }, 2000);
+          }
+        }
+      }).mount('#app');
+    </script>
+  </body>
+</html>
